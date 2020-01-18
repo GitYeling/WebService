@@ -9,47 +9,46 @@
  */
 
 const Request = require('./requestdata')
-const db = require('./db')
+const InsertData = require('./db')
 
 var requestNum = 0
 var pageNum = 1
 var totalNum = 0
 
 var Service = async (condition) => {
-
-    console.log(condition)
-    key = Object.keys(condition.cachet_qxerp.param)[0]
-    if (key === 'getdepartment'){
-        pageSize = condition.cachet_qxerp.param.getdepartment.condition.pagesize;
-    }else {
-        pageSize = condition.cachet_qxerp.param.getgoodsinfo.condition.pagesize;
-    }
-
-
-    do {
-        var requestdata = await Request(condition,key)
-        if (requestdata.msg_code === 'SUCCESS') {
-            // console.log(JSON.stringify(requestdata));
-            requestNum = requestNum + parseInt(pageSize)
-            console.log('***********已请求：' + requestNum + '条*************')
-            pageNum++
-            // InsertData()
-            if (key === 'getdepartment'){
-                InsertData(requestdata.getDepartment.result_list.goodsinfo,)
-                totalNum = requestdata.getDepartment.total_num
-                condition.cachet_qxerp.param.getdepartment.condition.page = pageNum;
-            }else {
-                InsertData(requestdata.getGoodsInfo.result_list.goodsinfo,)
-                totalNum = requestdata.getGoodsInfo.total_num
-                condition.cachet_qxerp.param.getgoodsinfo.condition.page = pageNum;
-            }            
+    return new Promise(async(resolve,reject) => {
+        console.log(condition)
+        key = Object.keys(condition.cachet_qxerp.param)[0]
+        if (key === 'getdepartment') {
+            pageSize = condition.cachet_qxerp.param.getdepartment.condition.pagesize;
+        } else {
+            pageSize = condition.cachet_qxerp.param.getgoodsinfo.condition.pagesize;
         }
-    } while (requestNum < totalNum)
+        do {
+            var requestdata = await Request(condition, key)
+            if (requestdata.msg_code === 'SUCCESS') {
+                // console.log(JSON.stringify(requestdata));
+                requestNum = requestNum + parseInt(pageSize)
+                console.log('***********已请求：' + requestNum + '条*************')
+                pageNum++
+                // InsertData()
+                if (key === 'getdepartment') {
+                    InsertData(requestdata.getDepartment.result_list.department,'')
+                    totalNum = requestdata.getDepartment.total_num
+                    condition.cachet_qxerp.param.getdepartment.condition.page = pageNum;
+                } else {
+                    InsertData(requestdata.getGoodsInfo.result_list.goodsinfo,'')
+                    totalNum = requestdata.getGoodsInfo.total_num
+                    condition.cachet_qxerp.param.getgoodsinfo.condition.page = pageNum;
+                }
+            }
+        } while (requestNum < totalNum)
+        requestNum = 0
+        pageNum = 1
+        totalNum = 0
+        resolve('OK')
+    })
+
 }
 
 module.exports = Service
-
-
-
-
-

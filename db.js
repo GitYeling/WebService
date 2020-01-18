@@ -9,16 +9,17 @@ const connection = mysql.createConnection({
 
 // 这里传入的数据是最内层的产品信息
 var InsertData = (data, type) => {
-    // return new Promise((resolve,reject) => {
-    //     var sql = `SELECT * FROM '${type}'`;
-    //     connection.query(sql, function (err, result) {
-    //         if (err) {
-    //             reject('[SELECT ERROR] - ', err.message);
-    //         }
-    //         console.log('--------------------------数据插入成功----------------------------');
-    //         resolve(result);
-    //     });
-    // })
+    console.log(data)
+    return new Promise((resolve,reject) => {
+        var sql = `SELECT * FROM '${type}' where`;
+        connection.query(sql, function (err, result) {
+            if (err) {
+                reject('[SELECT ERROR] - ', err.message);
+            }
+            console.log('--------------------------数据插入成功----------------------------');
+            resolve(result);
+        });
+    })
 }
 
 module.exports = InsertData

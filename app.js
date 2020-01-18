@@ -2,14 +2,15 @@ const Service = require('./controller')
 const { depCondition, goodsCondition } = require('./parameter')
 
 
-console.log('定时任务已启动...')
 
-// var interval = 1000 * 1000
-// setInterval(() => {
+ var interval = 15 * 1000
+ setInterval(async() => {
     // setDateTime()
-    Service(depCondition,'getdepartment')
-    // Service(goodsCondition,'getgoodsinfo')
-// }, interval);
+    var result = await Service(depCondition,'getdepartment')
+    console.log(result)
+     Service(goodsCondition,'getgoodsinfo')
+ }, interval);
+ console.log('定时任务已启动...')
 
 
 setDateTime => {
