@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/GitYeling/WebService/issues"
   },
-  "homepage": "https://github.com/GitYeling/WebService#readme"
+  "homepage": "https://github.com/GitYeling/WebService#readme",
+  "dependencies": {
+    "mysql": "^2.17.1",
+    "soap": "^0.30.0"
+  }
 }
